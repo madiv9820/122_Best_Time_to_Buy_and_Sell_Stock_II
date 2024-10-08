@@ -1,5 +1,5 @@
 # Maximum Profit from Stock Prices: Approaches and Implementations
-- ## Solution 1 - Using Recursion
+- ## Solution 1 - Using Recursion (Time Limit Exceeded)
     - ### Intuition
     The goal is to maximize profit from buying and selling stocks given daily prices. The approach explores all possible buy-sell pairs while also considering potential profits from previous and subsequent days.
 
@@ -54,7 +54,7 @@
         ```
     <hr>
 
-- ## Solution 2: Using Memoization
+- ## Solution 2: Using Memoization (Time Limit Exceeded)
     - ### Intuition
         - The goal is to maximize profit from buying and selling stocks based on given daily prices. The approach uses recursion to explore all possible buy-sell pairs while considering profits from earlier and later transactions.
 
@@ -113,7 +113,7 @@
         ```
     <hr>
 
-- ## Solution 3: Using Dynamic Programming
+- ## Solution 3: Using Dynamic Programming (Time Limit Exceeded)
 
     - ### Intuition
         - The goal is to maximize profit from buying and selling stocks over a range of days. By using a dynamic programming (DP) approach, we can systematically calculate the maximum profit for various intervals, storing results to avoid redundant calculations.
