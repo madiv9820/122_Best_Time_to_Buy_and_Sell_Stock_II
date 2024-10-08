@@ -2,11 +2,16 @@ from typing import List
 
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
+        profit_Cache = {}
+
         # Helper function to find the maximum profit within a given range
         def find_Max_Profit_Between_Range(start_Day: int, end_Day: int) -> int:
             # Base case: if the start day is greater than the end day, no profit can be made
             if start_Day > end_Day:
                 return 0
+
+            if (start_Day, end_Day) in profit_Cache:
+                return profit_Cache[(start_Day, end_Day)]
             
             max_Profit = 0  # Initialize maximum profit for the current range
 
@@ -21,11 +26,9 @@ class Solution:
                     
                     # Update max profit if the current profit is greater
                     max_Profit = max(max_Profit, current_Profit)
-            
+
+            profit_Cache[(start_Day, end_Day)] = max_Profit
             return max_Profit  # Return the maximum profit found in this range
         
         # Start the recursive profit calculation from the full range of days
         return find_Max_Profit_Between_Range(0, len(prices) - 1)
-
-# Time Complexity: O(n^3) - There are nested loops for buy/sell combinations and recursive calls.
-# Space Complexity: O(n) - The recursion stack can go as deep as n in the worst case.
