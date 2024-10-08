@@ -2,33 +2,31 @@ from typing import List
 
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        profit_Cache = {}
-
-        # Helper function to find the maximum profit within a given range
-        def find_Max_Profit_Between_Range(start_Day: int, end_Day: int) -> int:
-            # Base case: if the start day is greater than the end day, no profit can be made
-            if start_Day > end_Day:
-                return 0
-
-            if (start_Day, end_Day) in profit_Cache:
-                return profit_Cache[(start_Day, end_Day)]
-            
-            max_Profit = 0  # Initialize maximum profit for the current range
-
-            # Iterate over all possible buy days
-            for buy_Day in range(start_Day, end_Day):
-                # Iterate over all possible sell days after the buy day
-                for sell_Day in range(buy_Day + 1, end_Day + 1):
-                    # Calculate current profit from this buy-sell pair
-                    current_Profit = ((prices[sell_Day] - prices[buy_Day]) + 
-                                      find_Max_Profit_Between_Range(start_Day, buy_Day - 1) + 
-                                      find_Max_Profit_Between_Range(sell_Day + 1, end_Day))
-                    
-                    # Update max profit if the current profit is greater
-                    max_Profit = max(max_Profit, current_Profit)
-
-            profit_Cache[(start_Day, end_Day)] = max_Profit
-            return max_Profit  # Return the maximum profit found in this range
+        n = len(prices)
         
-        # Start the recursive profit calculation from the full range of days
-        return find_Max_Profit_Between_Range(0, len(prices) - 1)
+        # DP table to store the maximum profit for each range
+        dp = [[0] * n for _ in range(n)]
+
+        # Fill the DP table
+        for length in range(2, n + 1):  # length of the interval
+            for start_Day in range(n - length + 1):  # starting index of the interval
+                end_Day = start_Day + length - 1  # ending index of the interval
+                max_Profit = 0  # Initialize maximum profit for this interval
+                
+                # Iterate over all possible buy days in the current interval
+                for buy_Day in range(start_Day, end_Day):
+                    # Iterate over all possible sell days after the buy day
+                    for sell_Day in range(buy_Day + 1, end_Day + 1):
+                        # Calculate profit for this buy-sell pair
+                        current_Profit = (prices[sell_Day] - prices[buy_Day] +
+                                          (dp[start_Day][buy_Day - 1] if buy_Day > start_Day else 0) +
+                                          (dp[sell_Day + 1][end_Day] if sell_Day < end_Day else 0))
+                        # Update the max profit for this interval
+                        max_Profit = max(max_Profit, current_Profit)
+
+                dp[start_Day][end_Day] = max_Profit  # Store the result in DP table
+
+        return dp[0][n - 1]  # The answer is the maximum profit for the full range
+
+# Time Complexity: O(n^3) - There are three nested loops to fill the DP table.
+# Space Complexity: O(n^2) - The DP table stores results for each (start_Day, end_Day) pair.
